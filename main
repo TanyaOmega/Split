@@ -1,0 +1,21 @@
+pragma solidity ^0.8.0;
+
+contract SplitPayment {
+    address payable[] public beneficiaries;
+
+    constructor(address payable[] memory _beneficiaries) {
+        beneficiaries = _beneficiaries;
+    }
+
+    function deposit() public payable {}
+
+    function distribute() public {
+        require(beneficiaries.length > 0, "No beneficiaries to distribute funds.");
+
+        uint256 amount = address(this).balance / beneficiaries.length;
+
+        for (uint256 i = 0; i < beneficiaries.length; i++) {
+            beneficiaries[i].transfer(amount);
+        }
+    }
+}
